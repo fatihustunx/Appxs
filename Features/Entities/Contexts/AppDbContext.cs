@@ -10,7 +10,7 @@ namespace Features.Entities.Contexts
 {
     public class AppDbContext : DbContext
     {
-        protected AppDbContext(DbContextOptions options)
+        public AppDbContext(DbContextOptions options)
             : base(options)
         { }
 

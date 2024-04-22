@@ -1,3 +1,5 @@
+using Features.Entities.Apps;
+
 namespace Web.Apixs
 {
     public class Program
@@ -9,6 +11,9 @@ namespace Web.Apixs
             // Add services to the containers.
 
             builder.Services.AddControllers();
+
+            builder.Services.AddAppServices();
+
             // Learn more about configuring Swagger/OpenAPI's
             // at https://aka.ms/aspnetcore/swashbuckle s.
             builder.Services.AddEndpointsApiExplorer();
