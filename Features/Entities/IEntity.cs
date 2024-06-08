@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Features.Entities
 {
-    public class AppEntity:IEntity
+    public class IEntity
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
     }
 }

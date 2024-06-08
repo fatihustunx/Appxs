@@ -14,14 +14,14 @@ namespace Features.Features
     public class AppEntityFeatureRequest
         :IRequest<AppEntityFeatureResponse>
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        //@Properties
     }
 
     public class AppEntityFeatureResponse
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+
+        //@Properties
     }
 
     public class AppEntityFeatureProfile : Profile
@@ -37,8 +37,10 @@ namespace Features.Features
     {
         public AppEntityFeatureValidator()
         {
-            RuleFor(x => x.Id).GreaterThan(3);
-            RuleFor(x => x.Name).NotNull().NotEmpty();
+            //RuleFor(x => x.Id).GreaterThan(3);
+            //RuleFor(x => x.Name).NotNull().NotEmpty();
+
+            // Rules.
         }
     }
 

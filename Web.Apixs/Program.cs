@@ -1,4 +1,5 @@
 using Features.Entities.Apps;
+using App.Appxs.Exceptions;
 
 namespace Web.Apixs
 {
@@ -12,7 +13,8 @@ namespace Web.Apixs
 
             builder.Services.AddControllers();
 
-            builder.Services.AddAppServices();
+            builder.Services.AddAppServices
+                (builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI's
             // at https://aka.ms/aspnetcore/swashbuckle s.
@@ -30,8 +32,11 @@ namespace Web.Apixs
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            if (app.Environment.IsProduction())
+                
+                app.UseExceptionsMiddlewares();
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

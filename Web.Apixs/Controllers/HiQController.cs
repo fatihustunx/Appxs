@@ -2,6 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Features.Features.AppEntityFeature2;
+using static Features.Features.AppEntityFeature4;
+using static Features.Features.AppEntityFeature5;
 
 namespace Web.Apixs.Controllers
 {
@@ -16,24 +19,62 @@ namespace Web.Apixs.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("/Appxs")]
+        public IActionResult Appxs()
         {
             return Ok("Hi Q,");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Get2(AppEntityFeatureRequest req)
+        public async Task<IActionResult> Add(AppEntityFeatureRequest req)
         {
             var res = await _mediator.Send(req);
 
             return Ok(res);
         }
 
-        [HttpPost("/2")]
-        public async Task<IActionResult> Get3(AppEntityFeature2Request req)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            AppEntityFeature2Request req = new() { id=id};
+
+            var res = await _mediator.Send(req);
+
+            return Ok(res);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            AppEntityFeature3Request req = new() { };
+
+            var res = await _mediator.Send(req);
+
+            return Ok(res);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(AppEntityFeature4Request req)
         {
             var res = await _mediator.Send(req);
+
+            return Ok(res);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            AppEntityFeature5Request req = new()
+            {
+                id = id,
+            };
+
+            var res = await _mediator.Send(req);
+
+            if(!res.res)
+            {
+                return BadRequest(res);
+            }
 
             return Ok(res);
         }

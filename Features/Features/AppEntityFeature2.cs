@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Features.Entities;
-using Features.Entities.Contexts;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Features.Entities.Contexts;
+using Features.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,49 +11,51 @@ using System.Threading.Tasks;
 
 namespace Features.Features
 {
-    public class AppEntityFeature2Request
-        :IRequest<AppEntityFeature2Response>
-    {}
-
-    public class AppEntityFeature2Response
+    public class AppEntityFeature2
     {
-        public List<Res> Items {  get; set; } 
+        public class AppEntityFeature2Request
+        : IRequest<AppEntityFeature2Response>
+        {
+            public int id { get; set; }
+        }
 
-        public class Res
+        public class AppEntityFeature2Response
         {
             public int Id { get; set; }
-            public string Name { get; set; }
-        } 
-    }
 
-    public class AppEntityFeature2Profile : Profile
-    {
-        public AppEntityFeature2Profile()
-        {
-            CreateMap<AppEntity,AppEntityFeature2Response.Res>().ReverseMap();
-        }
-    }
-
-    public class AppEntityFeature2Handler : IRequestHandler<AppEntityFeature2Request, AppEntityFeature2Response>
-    {
-        private readonly IMapper _mapper;
-        private readonly AppDbContext _context;
-
-        public AppEntityFeature2Handler(IMapper mapper, AppDbContext context)
-        {
-            _mapper = mapper;
-            _context = context;
+            //@Properties
         }
 
-        public async Task<AppEntityFeature2Response> Handle(AppEntityFeature2Request request, CancellationToken cancellationToken)
+        public class AppEntityFeature2Profile : Profile
         {
-            var entites = await _context.AppEntities.ToListAsync(cancellationToken);
+            public AppEntityFeature2Profile()
+            {
+                CreateMap<AppEntity, AppEntityFeature2Response>().ReverseMap();
+            }
+        }
 
-            var res = _mapper.Map<List<AppEntityFeature2Response.Res>>(entites);
+        public class AppEntityFeature2Handler : IRequestHandler<AppEntityFeature2Request, AppEntityFeature2Response>
+        {
+            private readonly IMapper _mapper;
+            private readonly AppDbContext _context;
 
-            var res2 = new AppEntityFeature2Response { Items = res };
+            public AppEntityFeature2Handler(IMapper mapper, AppDbContext context)
+            {
+                _mapper = mapper;
+                _context = context;
+            }
 
-            return res2;
+            public async Task<AppEntityFeature2Response> Handle(AppEntityFeature2Request request, CancellationToken cancellationToken)
+            {
+                var entity = await _context.Set<AppEntity>().
+                    FirstOrDefaultAsync(x=>x.Id==request.id);
+
+                if(entity==null) { throw new Exception("Errors.*"); }
+
+                var res = _mapper.Map<AppEntityFeature2Response>(entity);
+
+                return res;
+            }
         }
     }
 }
