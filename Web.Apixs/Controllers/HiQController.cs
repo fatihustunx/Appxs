@@ -1,10 +1,6 @@
-﻿using Features.Features;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using Features.Features.AppEntitys;
 using Microsoft.AspNetCore.Mvc;
-using static Features.Features.AppEntityFeature2;
-using static Features.Features.AppEntityFeature4;
-using static Features.Features.AppEntityFeature5;
+using MediatR;
 
 namespace Web.Apixs.Controllers
 {
@@ -80,3 +76,5 @@ namespace Web.Apixs.Controllers
         }
     }
 }
+
+
