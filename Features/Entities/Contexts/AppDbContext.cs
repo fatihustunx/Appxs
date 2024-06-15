@@ -16,6 +16,8 @@ namespace Features.Entities.Contexts
 
         public DbSet<AppEntity> AppEntities { get; set; }
 
+        //@AppEntities
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

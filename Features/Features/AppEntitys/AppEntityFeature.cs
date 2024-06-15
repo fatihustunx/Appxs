@@ -4,10 +4,6 @@ using Features.Entities.Contexts;
 using FluentValidation;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Features.Features.AppEntitys;
 
@@ -66,7 +62,7 @@ public class AppEntityFeatureHandler : IRequestHandler<AppEntityFeatureRequest, 
 
         if (!valRes.IsValid)
         {
-            throw new Exception("Erros.");
+            throw new ValidationException(valRes.Errors);
         }
 
         await _context.AddAsync(entity);

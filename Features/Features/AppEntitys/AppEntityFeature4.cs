@@ -4,11 +4,10 @@ using Features.Entities;
 using FluentValidation;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
+
+using App.Appxs.Exceptions;
 
 namespace Features.Features.AppEntitys;
 
@@ -36,6 +35,14 @@ public class AppEntityFeature4Profile : Profile
     }
 }
 
+public class AppEntityFeature4Validator : AbstractValidator<AppEntity>
+{
+    public AppEntityFeature4Validator()
+    {
+        // Gets Creator Rules.
+    }
+}
+
 public class AppEntityFeature4Handler : IRequestHandler<AppEntityFeature4Request, AppEntityFeature4Response>
 {
     private readonly IMapper _mapper;
@@ -58,7 +65,7 @@ public class AppEntityFeature4Handler : IRequestHandler<AppEntityFeature4Request
 
         if (!valRes.IsValid)
         {
-            throw new Exception("Erros.");
+            throw new ValidationException(valRes.Errors);
         }
 
         var isExists = await _context.Set<AppEntity>()
@@ -66,7 +73,7 @@ public class AppEntityFeature4Handler : IRequestHandler<AppEntityFeature4Request
 
         if (!isExists)
         {
-            throw new Exception("Errors.**");
+            throw new BusinessException("Böyle bir varlik yok.");
         }
 
         _context.Update(entity);

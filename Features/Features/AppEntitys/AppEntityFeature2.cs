@@ -4,10 +4,8 @@ using Features.Entities.Contexts;
 using Features.Entities;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using App.Appxs.Exceptions;
 
 namespace Features.Features.AppEntitys;
 
@@ -48,7 +46,7 @@ public class AppEntityFeature2Handler : IRequestHandler<AppEntityFeature2Request
         var entity = await _context.Set<AppEntity>().
             FirstOrDefaultAsync(x => x.Id == request.id);
 
-        if (entity == null) { throw new Exception("Errors.*"); }
+        if (entity == null) { throw new BusinessException("Böyle bir varlik yok."); }
 
         var res = _mapper.Map<AppEntityFeature2Response>(entity);
 

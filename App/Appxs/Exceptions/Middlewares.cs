@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using FluentValidation;
 
 namespace App.Appxs.Exceptions
 {
@@ -34,56 +35,56 @@ namespace App.Appxs.Exceptions
         {
             context.Response.ContentType = "application/json";
 
-            //if (exception.GetType() == typeof(AuthorizationException))
-            //    return CreateAuthorizationException(context, exception);
-            //if (exception.GetType() == typeof(ValidationException)) return CreateValidationException(context, exception);
-            //if (exception.GetType() == typeof(BusinessException)) return CreateBusinessException(context, exception);
+            if (exception.GetType() == typeof(AuthorizationException))
+                return CreateAuthorizationException(context, exception);
+            if (exception.GetType() == typeof(ValidationException)) return CreateValidationException(context, exception);
+            if (exception.GetType() == typeof(BusinessException)) return CreateBusinessException(context, exception);
             return CreateInternalException(context, exception);
         }
 
-        //private Task CreateAuthorizationException(HttpContext context, Exception exception)
-        //{
-        //    context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.Unauthorized);
+        private Task CreateAuthorizationException(HttpContext context, Exception exception)
+        {
+            context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.Unauthorized);
 
-        //    return context.Response.WriteAsync(new AuthorizationProblemDetails
-        //    {
-        //        Status = StatusCodes.Status401Unauthorized,
-        //        Type = "https://example.com/probs/authorization",
-        //        Title = "Authorization exception",
-        //        Detail = exception.Message,
-        //        Instance = ""
-        //    }.ToString());
-        //}
+            return context.Response.WriteAsync(new AuthorizationProblemDetails
+            {
+                Status = StatusCodes.Status401Unauthorized,
+                Type = "https://example.com/probs/authorization",
+                Title = "Authorization exception",
+                Detail = exception.Message,
+                Instance = ""
+            }.ToString());
+        }
 
-        //private Task CreateBusinessException(HttpContext context, Exception exception)
-        //{
-        //    context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+        private Task CreateValidationException(HttpContext context, Exception exception)
+        {
+            context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+            object errors = ((ValidationException)exception).Errors;
 
-        //    return context.Response.WriteAsync(new BusinessProblemDetails
-        //    {
-        //        Status = StatusCodes.Status400BadRequest,
-        //        Type = "https://example.com/probs/business",
-        //        Title = "Business exception",
-        //        Detail = exception.Message,
-        //        Instance = ""
-        //    }.ToString());
-        //}
+            return context.Response.WriteAsync(new ValidationProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "https://example.com/probs/validation",
+                Title = "Validation error(s)",
+                Detail = "",
+                Instance = "",
+                Errors = errors
+            }.ToString());
+        }
 
-        //private Task CreateValidationException(HttpContext context, Exception exception)
-        //{
-        //    context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
-        //    object errors = ((ValidationException)exception).Errors;
+        private Task CreateBusinessException(HttpContext context, Exception exception)
+        {
+            context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
 
-        //    return context.Response.WriteAsync(new ValidationProblemDetails
-        //    {
-        //        Status = StatusCodes.Status400BadRequest,
-        //        Type = "https://example.com/probs/validation",
-        //        Title = "Validation error(s)",
-        //        Detail = "",
-        //        Instance = "",
-        //        Errors = errors
-        //    }.ToString());
-        //}
+            return context.Response.WriteAsync(new BusinessProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "https://example.com/probs/business",
+                Title = "Business exception",
+                Detail = exception.Message,
+                Instance = ""
+            }.ToString());
+        }
 
         private Task CreateInternalException(HttpContext context, Exception exception)
         {

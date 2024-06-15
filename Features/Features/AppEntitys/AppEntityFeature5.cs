@@ -3,10 +3,7 @@ using Features.Entities.Contexts;
 using Features.Entities;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Features.Features.AppEntitys;
@@ -52,11 +49,9 @@ public class AppEntityFeature5Handler : IRequestHandler<AppEntityFeature5Request
         var entity = _mapper.Map<AppEntity>(request);
 
         _context.Set<AppEntity>().Remove(entity);
-
         await _context.SaveChangesAsync();
 
         res.res = true;
-
         return res;
     }
 }

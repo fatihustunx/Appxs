@@ -19,12 +19,12 @@ namespace Features.Entities.Apps
             IConfiguration configuration)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Appxs"));
 
-            services.AddDbContext<AppDbContext>(options => options
-            .UseSqlServer(configuration.GetConnectionString("Appxs"),
-                c => c.MigrationsAssembly("App")));
+            //services.AddDbContext<AppDbContext>(options => options
+            //.UseSqlServer(configuration.GetConnectionString("Appxs"),
+            //    c => c.MigrationsAssembly("Web.Apixs")));
 
             services.AddMediatR(config =>
             {

@@ -16,7 +16,7 @@ namespace Features.Entities.Configurations
 
             builder.Property(c => c.Id).HasColumnName("Id").IsRequired();
 
-            builder.Property(c => c.Name).HasColumnName("Name").IsRequired();
+            builder.Property(c => c.Name).HasColumnName("Name").HasMaxLength(77).IsRequired();
 
             builder.HasIndex(indexExpression: b => b.Name, name: "UK_AppEntites_Name").IsUnique();
         }

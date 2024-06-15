@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-
 namespace Features.Features.AppEntitys;
 
 public class AppEntityFeature3Request

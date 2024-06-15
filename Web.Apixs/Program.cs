@@ -32,7 +32,7 @@ namespace Web.Apixs
 
             app.UseHttpsRedirection();
 
-            if (app.Environment.IsProduction())
+            //*if (app.Environment.IsProduction())
                 
                 app.UseExceptionsMiddlewares();
 
