@@ -22,4 +22,10 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="xContexts\Entities\" />
+    <Folder Include="xContexts\xConfigs\" />
+  </ItemGroup>
+
 </Project>

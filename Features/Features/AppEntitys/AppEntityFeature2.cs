@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-//@LogUsing
-//@CacheUsing
-//@AuthsUsing
+using Microsoft.EntityFrameworkCore;//@LogUsing//@CacheUsing//@AuthsUsing
 using Features.Entities.Contexts;
 using App.Appxs.Exceptions;
 using Features.Entities;
@@ -11,18 +8,15 @@ using MediatR;
 namespace Features.Features.AppEntitys;
 
 public class AppEntityFeature2Request
-: IRequest<AppEntityFeature2Response>
+    : IRequest<AppEntityFeature2Response>
     //@LogReq//@CacheReq//@AuthsReq
-{
-    //@AuthsParams
-    //@CacheParams
+{//@AuthsParams//@CacheParams
     public int id { get; set; }
 }
 
 public class AppEntityFeature2Response
 {
-    public int Id { get; set; }
-    //@Properties
+    public int Id { get; set; }//@Properties
 }
 
 public class AppEntityFeature2Profile : Profile

@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using Features.Entities;
-//@LogUsing
-//@CacheUsing
-//@AuthsUsing
+using Features.Entities;//@LogUsing//@CacheUsing//@AuthsUsing
 using Features.Entities.Contexts;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
@@ -11,11 +8,9 @@ using System;
 namespace Features.Features.AppEntitys;
 
 public class AppEntityFeature5Request
-: IRequest<AppEntityFeature5Response>
+    : IRequest<AppEntityFeature5Response>
     //@LogReq//@CacherReq//@AuthsReq
-{
-    //@AuthsParams
-    //@CacherParams
+{//@AuthsParams//@CacherParams
     public int id { get; set; }
 }
 

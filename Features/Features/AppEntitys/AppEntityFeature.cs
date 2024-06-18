@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using Features.Entities;
-//@LogUsing
-//@CacheUsing
-//@AuthsUsing
+using Features.Entities;//@LogUsing//@CacheUsing//@AuthsUsing
 using Features.Entities.Contexts;
 using FluentValidation;
 using MediatR;
@@ -13,16 +10,12 @@ namespace Features.Features.AppEntitys;
 public class AppEntityFeatureRequest
     : IRequest<AppEntityFeatureResponse>
     //@LogReq//@CacherReq//@AuthsReq
-{
-    //@AuthsParams
-    //@CacherParams
-    //@Properties
-}
+{//@AuthsParams//@CacherParams//@sProperties
+ }
 
 public class AppEntityFeatureResponse
 {
-    public int Id { get; set; }
-    //@Properties
+    public int Id { get; set; }//@Properties
 }
 
 public class AppEntityFeatureProfile : Profile
