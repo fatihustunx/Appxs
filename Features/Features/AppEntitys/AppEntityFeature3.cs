@@ -1,15 +1,22 @@
 ﻿using AutoMapper;
 using Features.Entities;
 using Features.Entities.Contexts;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
+//@LogUsing
+//@CacheUsing
+//@AuthsUsing
+using MediatR;
 using System;
 
 namespace Features.Features.AppEntitys;
 
 public class AppEntityFeature3Request
     : IRequest<AppEntityFeature3Response>
-{ }
+    //@LogReq//@CacheReq//@AuthsReq
+{
+    //@AuthsParams
+    //@CacheParams
+}
 
 public class AppEntityFeature3Response
 {
@@ -18,7 +25,6 @@ public class AppEntityFeature3Response
     public class Res
     {
         public int Id { get; set; }
-
         //@Properties
     }
 }

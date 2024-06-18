@@ -1,24 +1,27 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+//@LogUsing
+//@CacheUsing
+//@AuthsUsing
 using Features.Entities.Contexts;
+using App.Appxs.Exceptions;
 using Features.Entities;
 using MediatR;
-using System;
-
-using App.Appxs.Exceptions;
 
 namespace Features.Features.AppEntitys;
 
 public class AppEntityFeature2Request
 : IRequest<AppEntityFeature2Response>
+    //@LogReq//@CacheReq//@AuthsReq
 {
+    //@AuthsParams
+    //@CacheParams
     public int id { get; set; }
 }
 
 public class AppEntityFeature2Response
 {
     public int Id { get; set; }
-
     //@Properties
 }
 

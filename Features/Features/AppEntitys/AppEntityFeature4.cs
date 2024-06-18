@@ -1,28 +1,30 @@
 ﻿using AutoMapper;
-using Features.Entities.Contexts;
 using Features.Entities;
+//@LogUsing
+//@CacheUsing
+//@AuthsUsing
+using Features.Entities.Contexts;
+using Microsoft.EntityFrameworkCore;
 using FluentValidation;
+using App.Appxs.Exceptions;
 using MediatR;
 using System;
-
-using Microsoft.EntityFrameworkCore;
-
-using App.Appxs.Exceptions;
 
 namespace Features.Features.AppEntitys;
 
 public class AppEntityFeature4Request
 : IRequest<AppEntityFeature4Response>
+    //@LogReq//@CacherReq//@AuthsReq
 {
+    //@AuthsParams
+    //@CacherParams
     public int Id { get; set; }
-
     //@Properties
 }
 
 public class AppEntityFeature4Response
 {
     public int Id { get; set; }
-
     //@Properties
 }
 

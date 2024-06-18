@@ -2,21 +2,28 @@
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using App.Appxs.Apps.Logging.Usings;
 
 namespace App.Appxs.Exceptions
 {
     public class Middlewares
     {
+        private readonly ILogger _logger;
+
         private readonly RequestDelegate _next;
 
-        public Middlewares(RequestDelegate next)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public Middlewares(ILogger logger, RequestDelegate next,
+            IHttpContextAccessor httpContextAccessor)
         {
             _next = next;
+            _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task Invoke(HttpContext context)
@@ -27,6 +34,8 @@ namespace App.Appxs.Exceptions
             }
             catch (Exception exception)
             {
+                await LogException(context, exception);
+
                 await HandleExceptionAsync(context, exception);
             }
         }
@@ -65,7 +74,7 @@ namespace App.Appxs.Exceptions
             {
                 Status = StatusCodes.Status400BadRequest,
                 Type = "https://example.com/probs/validation",
-                Title = "Validation error(s)",
+                Title = "Validation Error(s)",
                 Detail = "",
                 Instance = "",
                 Errors = errors
@@ -80,7 +89,7 @@ namespace App.Appxs.Exceptions
             {
                 Status = StatusCodes.Status400BadRequest,
                 Type = "https://example.com/probs/business",
-                Title = "Business exception",
+                Title = "Business Exceptions",
                 Detail = exception.Message,
                 Instance = ""
             }.ToString());
@@ -94,7 +103,7 @@ namespace App.Appxs.Exceptions
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Type = "https://example.com/probs/internal",
-                Title = "Internal Exception",
+                Title = "Internal Server Errors",
                 Detail = exception.Message,
                 Instance = ""
             };
@@ -102,6 +111,29 @@ namespace App.Appxs.Exceptions
             var s = JsonSerializer.Serialize(res);
 
             return context.Response.WriteAsync(s);
+        }
+
+        private Task LogException(HttpContext context, Exception ex)
+        {
+            List<LogParameter> logParameters = new()
+        {
+            new LogParameter()
+            {
+                Type = context.GetType().Name, Value = ex.ToString()
+            }
+        };
+
+            LogDetailWithException logDetail = new()
+            {
+                ExceptionMessage = ex.Message,
+                MethodName = _next.Method.Name,
+                Parameters = logParameters,
+                User = _httpContextAccessor.HttpContext.User.Identity?.Name ?? "?"
+            };
+
+            _logger.Error(JsonSerializer.Serialize(logDetail));
+
+            return Task.CompletedTask;
         }
     }
 }
