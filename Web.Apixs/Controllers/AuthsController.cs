@@ -41,5 +41,17 @@ namespace Web.Apixs.Controllers
 
             return Ok(res);
         }
+
+        [HttpGet("Kullanıcılar")]
+        public async Task<ActionResult> Kullanicilar()
+        {
+            var res = await _mediator.Send(new UsersRequest()); return Ok(res);
+        }
+
+        [HttpGet("Roller")]
+        public async Task<ActionResult> Roller()
+        {
+            var res = await _mediator.Send(new RolesRequest()); return Ok(res);
+        }
     }
 }

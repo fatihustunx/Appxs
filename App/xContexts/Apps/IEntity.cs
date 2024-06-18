@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace App.xContexts.Apps
 {
-    internal class IEntity
+    public class IEntity
     {
+        public int Id { get; set; }
     }
 }

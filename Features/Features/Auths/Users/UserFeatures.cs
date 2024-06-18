@@ -1,9 +1,8 @@
 ﻿using App.Appxs.Exceptions;
-using Features.Entities.Contexts;
 using Microsoft.EntityFrameworkCore;
-
-using System;
 using App.Appxs.eSecurities.Usings;
+using App.xContexts.Apps;
+using System;
 
 namespace Features.Features.Auths.Users
 {
@@ -19,6 +18,22 @@ namespace Features.Features.Auths.Users
         public async Task<bool> Add(User user)
         {
             await _appDbContext.AddAsync(user);
+            await _appDbContext.SaveChangesAsync();
+
+            var userRol = await _appDbContext.Set<OperationClaim>().
+                FirstOrDefaultAsync(c => c.Name.Equals("User"));
+
+            if (userRol==null) 
+            {
+                await _appDbContext.AddAsync(new OperationClaim { Name = "User" }); await _appDbContext.SaveChangesAsync();
+
+                userRol = await _appDbContext.Set<OperationClaim>().FirstOrDefaultAsync(c => c.Name.Equals("User"));
+            }
+
+            var useR = await _appDbContext.Set<User>().FirstOrDefaultAsync(c=>c.Email.Equals(user.Email));
+
+            await _appDbContext.AddAsync(new UserOperationClaim
+            { UserId = useR.Id, OperationClaimId = userRol.Id });
 
             await _appDbContext.SaveChangesAsync();
 
@@ -56,7 +71,5 @@ namespace Features.Features.Auths.Users
 
             return await result.ToListAsync();
         }
-
-        
     }
 }

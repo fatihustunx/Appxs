@@ -1,9 +1,12 @@
-using Features.Entities.Apps;
+using App.xContexts.Apps;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using App.Appxs.Exceptions;
 using Microsoft.OpenApi.Models;
 using App.Appxs.eSecurities.Usings;
+using Features.Features.Auths.Auths;
+using Features.Features.Auths.Users;
+using System.Reflection;
 namespace Web.Apixs
 {
     public class Program
@@ -11,8 +14,6 @@ namespace Web.Apixs
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the containers.
 
             builder.Services.AddControllers();
 
@@ -40,8 +41,11 @@ namespace Web.Apixs
                     };
                 });
 
-            builder.Services.AddAppServices
-                (builder.Configuration);
+            builder.Services.AddScoped<IAuthsFeatures, AuthsFeatures>();
+            builder.Services.AddScoped<IUserFeatures, UserFeatures>();
+
+            builder.Services.AddAppServices(builder.Configuration,
+                Assembly.Load("Features"));
 
             // Learn more about configuring Swagger/OpenAPI's
             // at https://aka.ms/aspnetcore/swashbuckle s.
@@ -86,7 +90,7 @@ namespace Web.Apixs
             app.UseHttpsRedirection();
 
             //* if (app.Environment.IsProduction())
-                
+
                 app.UseExceptionsMiddlewares();
 
             app.UseAuthentication();

@@ -1,8 +1,7 @@
 ﻿using App.Appxs.Apps.Logging.Usings;
-using MediatR;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-
+using System.Text.Json;
+using MediatR;
 using System;
 
 namespace App.Appxs.Apps.Logging;
@@ -44,7 +43,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
                        : _httpContextAccessor.HttpContext.User.Identity.Name
         };
 
-        _logger.Info(JsonConvert.SerializeObject(logDetail));
+        _logger.Info(JsonSerializer.Serialize(logDetail));
 
         return next();
     }

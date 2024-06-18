@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using App.Appxs.eSecurities.Usings;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Features.Features.Auths;
-using App.Appxs.eSecurities.Usings;
 
-namespace Features.Entities.Configurations
+using System;
+
+namespace App.xContexts.xConfigs
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
@@ -25,16 +25,16 @@ namespace Features.Entities.Configurations
             byte[] passwordSalt, passwordHash;
             HashingHelper.CreatePasswordHash("Passwords", out passwordSalt, out passwordHash);
 
-            builder.HasData(new User 
-                {   
-                    Id = 1,
-                    FirstName = "Fatih",
-                    LastName = "Üstün",
-                    Email = "Admin",
-                    PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt,
-                    Status = true
-                });
+            builder.HasData(new User
+            {
+                Id = 1,
+                FirstName = "Fatih",
+                LastName = "Üstün",
+                Email = "Admin",
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            });
         }
     }
 
@@ -51,6 +51,7 @@ namespace Features.Entities.Configurations
             builder.HasIndex(indexExpression: b => b.Name, name: "UK_Users_Name").IsUnique();
 
             builder.HasData(new OperationClaim { Id = 1, Name = "Admin" });
+            builder.HasData(new OperationClaim { Id = 2, Name = "User" });
         }
     }
 
@@ -64,7 +65,7 @@ namespace Features.Entities.Configurations
             builder.Property(c => c.UserId).HasColumnName("UserId").IsRequired();
             builder.Property(c => c.OperationClaimId).HasColumnName("OperationClaimId").IsRequired();
 
-            builder.HasData(new UserOperationClaim { Id = 1, UserId=1, OperationClaimId=1 });
+            builder.HasData(new UserOperationClaim { Id = 1, UserId = 1, OperationClaimId = 1 });
         }
     }
 }

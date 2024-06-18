@@ -1,6 +1,6 @@
 ﻿using System;
 using MediatR;
-using Features.Entities.Contexts;
+using App.xContexts.Apps;
 using Microsoft.EntityFrameworkCore;
 using App.Appxs.Exceptions;
 using App.Appxs.eSecurities.Usings;
@@ -35,9 +35,12 @@ public class BirRolVerHandler : IRequestHandler<BirRolVerRequest, BirRolVerRespo
 
     public async Task<BirRolVerResponse> Handle(BirRolVerRequest request, CancellationToken cancellationToken)
     {
-        var user = await _context.Set<User>().FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
+        var user = await _context.Set<User>().
+            FirstOrDefaultAsync(x => x.Email.Equals(request.Email));
 
         if (user == null) { throw new BusinessException("Böyle bir user yok."); }
+
+        var roles = await _context.Set<UserOperationClaim>().Where(c => c.UserId == user.Id).ToListAsync();
 
         var rol = await _context.Set<OperationClaim>().FirstOrDefaultAsync(x => x.Name.Equals(request.Role));
 
@@ -46,12 +49,22 @@ public class BirRolVerHandler : IRequestHandler<BirRolVerRequest, BirRolVerRespo
             await _context.Set<OperationClaim>().AddAsync
                 (new OperationClaim { Name = request.Role });
 
-            await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
+
+            rol = await _context.Set<OperationClaim>().
+                FirstOrDefaultAsync(x => x.Name.Equals(request.Role));
         }
 
-        rol = await _context.Set<OperationClaim>().FirstOrDefaultAsync(x => x.Name.Equals(request.Role));
+        foreach(var role in roles)
+        {
+            if(rol.Id == role.OperationClaimId)
+            {
+                throw new BusinessException("User'a ait böyle bir rol var.");
+            }
+        }
 
-        await _context.Set<UserOperationClaim>().AddAsync(new UserOperationClaim { UserId = user.Id, OperationClaimId = rol.Id });
+        await _context.Set<UserOperationClaim>().AddAsync
+            (new UserOperationClaim { UserId = user.Id, OperationClaimId = rol.Id });
 
         await _context.SaveChangesAsync();
 
