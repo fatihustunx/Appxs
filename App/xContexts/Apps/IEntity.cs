@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace App.xContexts.Apps
+namespace App.xContexts.Apps;
+public class IEntity
 {
-    public class IEntity
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }
